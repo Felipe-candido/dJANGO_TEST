@@ -153,12 +153,4 @@ coverage report -m
 
 ---
 
-## 👨‍💻 Autor
 
-Desenvolvido por [Seu Nome]. Focado em qualidade de software e testes automatizados com Django.
-
----
-
-## 📜 Licença
-
-Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
