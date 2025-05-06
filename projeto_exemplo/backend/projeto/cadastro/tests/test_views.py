@@ -34,7 +34,7 @@ class RegistroUsuarioTestCase(TestCase):
 
 class RegistroViewTests(TestCase):
     
-    #CRIA O USUARIO E O SERVIDOR DE TESTES 
+    # CRIA O USUARIO E O SERVIDOR DE TESTES 
     def setUp(self):
         self.client = APIClient()
         self.factory = APIRequestFactory()
@@ -49,7 +49,7 @@ class RegistroViewTests(TestCase):
         }
 
     def test_registro_sucesso(self):
-        # Formato JSON explícito para APIs REST
+        # Formato JSON para APIs REST
         response = self.client.post(
             self.url,
             self.valid_data,
