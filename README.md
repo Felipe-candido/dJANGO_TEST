@@ -57,19 +57,22 @@ coverage html  # Acesse htmlcov/index.html
 ```
 
 ### 5. **Factory Boy (mock de dados)**
-- Gera objetos de teste (usuários, produtos, etc.) com facilidade.
-- Ideal para criar fixtures dinâmicas para testes.
+
+- O Factory Boy é uma biblioteca Python usada para criar objetos de teste de forma automática e consistente, especialmente útil em testes unitários e de integração, principalmente com ORMs como Django ORM, SQLAlchemy, etc.
+
+- Ele se inspira no conceito de "factories" do Ruby on Rails (FactoryBot) e é projetado para substituir a prática de criar objetos manualmente nos testes, oferecendo mais legibilidade, reuso e controle.
 
 ```python
 import factory
-from django.contrib.auth import get_user_model
+from .models import User
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = get_user_model()
+        model = User  # Modelo que será instanciado
 
-    email = factory.Sequence(lambda n: f'user{n}@example.com')
-    password = factory.PostGenerationMethodCall('set_password', '123456')
+    name = factory.Faker('name')  # Gera nomes aleatórios
+    email = factory.Faker('email')
+    is_active = True
 ```
 
 ---
