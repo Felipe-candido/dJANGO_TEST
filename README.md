@@ -7,8 +7,7 @@ Este repositório demonstra a aplicação de **testes automatizados** em uma API
 
 ## 🎯 Objetivos
 
-- Demonstrar como testar endpoints de APIs REST com Django e DRF
-- Garantir que regras de negócio funcionem como esperado
+- Demonstrar como testar endpoints de APIs REST com Django Rest Framework
 - Proteger endpoints contra regressões futuras
 - Aumentar a confiabilidade com cobertura de testes
 
@@ -137,7 +136,6 @@ coverage report -m
 
 - Crie dados de teste com `Factory Boy`, evitando duplicações
 - Teste cenários de erro (validações, autenticação, permissão)
-- Use `reverse()` para resolver URLs dinamicamente
 - Mantenha os testes organizados por tipo: models, serializers, views, etc.
 - Almeje pelo menos 90% de cobertura nos arquivos críticos
 
