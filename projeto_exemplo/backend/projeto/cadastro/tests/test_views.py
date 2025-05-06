@@ -4,6 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient, APIRequestFactory
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.test import APITestCase
 from cadastro.models import usuario  
 from cadastro.views import (
     view_registro,
@@ -37,7 +38,6 @@ class RegistroViewTests(TestCase):
     # CRIA O USUARIO E O SERVIDOR DE TESTES 
     def setUp(self):
         self.client = APIClient()
-        self.factory = APIRequestFactory()
         
         self.url = reverse('registro-list')  
         
@@ -112,3 +112,39 @@ class AutenticacaoTests(TestCase):
       
       response = self.client.get('/api/me/')
       self.assertEqual(response.status_code, 200)
+
+
+class JWTTests(APITestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email='jwtuser@test.com',
+            password='jwtpassword123',
+        )
+        self.refresh = RefreshToken.for_user(self.user)
+        self.access_token = str(self.refresh.access_token)
+        self.url_rota_protegida = '/api/me/'
+
+    def test_acesso_com_token_valido(self):
+        self.client.cookies['access_token'] = str(self.access_token)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+        
+        response = self.client.get(self.url_rota_protegida)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['user']['email'], self.user.email)
+        self.assertEqual(response.data['user']['nome'], self.user.nome)
+
+    def test_acesso_sem_token(self):
+        response = self.client.get(self.url_rota_protegida)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertIn('detail', response.data)
+
+    def test_acesso_com_token_invalido(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer token-invalido')
+        
+        response = self.client.get(self.url_rota_protegida)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertIn('detail', response.data)
